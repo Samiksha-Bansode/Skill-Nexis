@@ -1,0 +1,25 @@
+Query 1:
+SELECT 
+    customer_name, 
+    SUM(total_price) AS total_spent
+FROM sales_data
+GROUP BY customer_name
+ORDER BY total_spent DESC
+LIMIT 5;
+
+Results:
+"Lynn Garrison"	"47940"
+"Debbie Turner"	"44990"
+"Megan Charles"	"44620"
+"Michelle Beltran"	"42471"
+"Rick Sanford"	"41211"
+
+
+Query 2:
+SELECT 
+    AVG(total_price) AS average_order_value
+FROM sales_data;
+
+Results:
+"12100.535"
+
