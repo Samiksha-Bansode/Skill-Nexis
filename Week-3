@@ -1,0 +1,44 @@
+import pandas as pd
+
+df = pd.read_csv('data.csv')
+
+df['Date'] = pd.to_datetime(df['Date'], format='mixed', errors='coerce')
+df = df.dropna(subset=['Date'])
+
+df['Calories'] = df['Calories'].fillna(df['Calories'].median())
+
+df['Pulse'] = df['Pulse'].fillna(df['Pulse'].median())
+df['Maxpulse'] = df['Maxpulse'].fillna(df['Maxpulse'].median())
+
+df = df[df['Duration'] <= 120]
+
+high_intensity_df = df[df['Pulse'] >= 100]
+
+df['Pulse_range'] = df['Maxpulse'] - df['Pulse']
+
+df['Calories_per_min'] = df['Calories'] / df['Duration']
+
+df['Intensity_level'] = df['Maxpulse'].apply(
+    lambda x: 'High' if x >= 150 else ('Moderate' if x >= 120 else 'Low')
+)
+
+print(df.head())
+
+
+
+
+OUTPUT:
+
+ Duration       Date  Pulse  Maxpulse  Calories  Pulse_range  \
+0        60 2020-12-01    110       130     409.1           20   
+1        60 2020-12-02    117       145     479.0           28   
+2        60 2020-12-03    103       135     340.0           32   
+3        45 2020-12-04    109       175     282.4           66   
+4        45 2020-12-05    117       148     406.0           31   
+
+   Calories_per_min Intensity_level  
+0          6.818333        Moderate  
+1          7.983333        Moderate  
+2          5.666667        Moderate  
+3          6.275556            High  
+4          9.022222        Moderate  
